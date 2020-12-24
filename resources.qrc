@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>google.jpg</file>
+        <file>logo.ico</file>
+        <file>微信二维码.jpg</file>
+        <file>微信二维码1.jpg</file>
+    </qresource>
+</RCC>
