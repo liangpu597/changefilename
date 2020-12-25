@@ -7,6 +7,14 @@
 #include<QStandardItemModel>
 
 
+//JSON相关头文件
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
+
+//浏览器
+#include <QDesktopServices>
+
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Widget)
@@ -153,7 +161,14 @@ Widget::Widget(QWidget *parent)
 
     //进度条隐藏
     ui->progressBar->hide();
+    networkManager = new QNetworkAccessManager(this);
+    connect(networkManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));//关联信号和槽
 
+/*
+    networkManager= new QNetworkAccessManager(this);
+    connect(networkManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(onResultUpdate(QNetworkReply*)));
+    networkManager->get(QNetworkRequest(QUrl("http://qt.nokia.com")));
+*/
 }
 
 Widget::~Widget()
@@ -1270,5 +1285,52 @@ void Widget::on_pushButton_clicked()
     //进度条
     ui->progressBar->setValue(0);  //置为0
     ui->progressBar->hide();   //隐藏
+
+}
+//检查更新槽函数
+void Widget::on_pushButton_2_clicked()
+{
+
+
+    QUrl url("https://api.github.com/repos/liangpu597/changefilename/releases/latest");
+    QNetworkRequest request;
+    request.setUrl(url);
+/*
+    m_currentReply = networkManager->get(request);  // GET
+    connect(networkManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(onResultUpdate(QNetworkReply*)));
+    QEventLoop eventLoop;
+    connect(networkManager, &QNetworkAccessManager::finished, &eventLoop, &QEventLoop::quit);
+    eventLoop.exec();
+*/
+    m_currentReply = networkManager->get(request);  // GET
+}
+
+void Widget::replyFinished(QNetworkReply *reply)
+{
+    QString str =(QString) reply->readAll();//读取接收到的数据
+    QJsonDocument d = QJsonDocument::fromJson(str.toUtf8());
+    QJsonObject sett2 = d.object();
+    double newrelease= sett2.value("tag_name").toString().toDouble();
+
+   //QJsonValue value = sett2.value(QString("tag_name"));
+   //qDebug() << "新的版本号是"<<sett2.value("tag_name").toString().toDouble()<<"测试"<<endl;
+   //QString(QJsonValue(value).toJson());
+   //qDebug() <<"版本号是: "<<VERSION<<endl;
+
+       if(newrelease > VERSION){   //新版本号大于当前版本号
+           QMessageBox::StandardButton button;
+           button = QMessageBox::question(this, tr("检查更新"),
+                   QString(tr("当前版本号%1,最新版本号是%2,是否下载新的版本？").arg(VERSION).arg(newrelease)),
+                   QMessageBox::Yes | QMessageBox::No);
+
+               if (button == QMessageBox::Yes){
+                   QDesktopServices::openUrl(QUrl("https://github.com/liangpu597/changefilename/releases/"));
+
+           }
+       }
+       else{
+           QMessageBox::information(0, "更新检查","此版本已经是最新发布版本", QMessageBox::Yes);
+       }
+
 
 }

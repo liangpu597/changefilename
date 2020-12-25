@@ -155,7 +155,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>4</number>
    </property>
    <widget class="QWidget" name="page">
     <widget class="QLineEdit" name="lineEdit">
@@ -618,27 +618,14 @@
     <widget class="QLabel" name="label_16">
      <property name="geometry">
       <rect>
-       <x>50</x>
+       <x>10</x>
        <y>0</y>
-       <width>71</width>
+       <width>111</width>
        <height>31</height>
       </rect>
      </property>
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;BY:蒲良&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_17">
-     <property name="geometry">
-      <rect>
-       <x>50</x>
-       <y>40</y>
-       <width>91</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;2020年12月&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;BY:云在青霄&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_4">
@@ -654,23 +641,23 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="resources.qrc">:/微信二维码1.jpg</pixmap>
+      <pixmap resource="resources.qrc">:/wechat.jpg</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QLabel" name="label_18">
+    <widget class="QPushButton" name="pushButton_2">
      <property name="geometry">
       <rect>
-       <x>260</x>
-       <y>20</y>
-       <width>191</width>
-       <height>31</height>
+       <x>280</x>
+       <y>3</y>
+       <width>75</width>
+       <height>23</height>
       </rect>
      </property>
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;mail: zhufeng597@foxmail.com&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>检查更新</string>
      </property>
     </widget>
    </widget>

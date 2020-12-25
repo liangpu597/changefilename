@@ -8,6 +8,8 @@
 #include <QButtonGroup>
 
 #include<QListWidget>
+
+#include <QtNetwork>  //网络支持
 QT_BEGIN_NAMESPACE
 namespace Ui { class Widget; }
 QT_END_NAMESPACE
@@ -78,6 +80,11 @@ private slots:
     void on_pushButton_ChangeFileName_1_clicked();  //执行修改槽函数
     void on_pushButton_clicked();  //刷新按钮槽函数 将更改后的新文件名显示在item(i,0)上
 
+    void on_pushButton_2_clicked();
+
+    //void onResultUpdate(QNetworkReply * reply);
+    void replyFinished(QNetworkReply *reply);
+
 private:
     Ui::Widget *ui;
 
@@ -99,6 +106,12 @@ private:
 
     QPushButton *button_append;    //扩展名
     QPushButton *button_about;     //关于
+
+    //网络支持
+    QNetworkAccessManager *networkManager;
+    //void onResultUpdate(QNetworkReply * reply);
+
+    QNetworkReply *m_currentReply;
 
 };
 #endif // WIDGET_H
