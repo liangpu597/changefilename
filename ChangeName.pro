@@ -1,7 +1,7 @@
 QT       += core gui
 
 QT += network
-DEFINES += "VERSION=0.2"       #版本号
+DEFINES += "VERSION=0.3"       #版本号
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 

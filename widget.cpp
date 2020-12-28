@@ -22,6 +22,8 @@ Widget::Widget(QWidget *parent)
 
     ui->setupUi(this);
 
+
+    /*
     //删除按钮
     QPushButton *button_delete = new QPushButton(this);
     button_delete->move(130,0);
@@ -59,16 +61,41 @@ Widget::Widget(QWidget *parent)
 
     //添加这些按钮到buttongroup
     buttonGroup = new QButtonGroup(this);
+
+
     buttonGroup->addButton(button_delete);
     buttonGroup->addButton(button_index);
     buttonGroup->addButton(button_insert);
     buttonGroup->addButton(button_append);
     buttonGroup->addButton(button_about);
 
-    buttonGroup->setExclusive(true);
-
     //一打开界面默认选中的是删除按钮 不然的话，后面必须点击一次才可以
     button_delete->setChecked(true);
+    */
+
+    //这个setCheckeable必须要有，要不然程序直接崩溃
+    ui->pushButton_delete->setCheckable(true);
+    ui->pushButton_index->setCheckable(true);
+    ui->pushButton_insert->setCheckable(true);
+    ui->pushButton_append->setCheckable(true);
+    ui->pushButton_about->setCheckable(true);
+
+
+
+    //注意：这个还有顺序的
+    buttonGroup = new QButtonGroup(this);
+    //如果后面没有编号 经过测试则button id 依次是 -2 -3 -4 -5... 现在给他们指定了编号
+    buttonGroup->addButton(ui->pushButton_delete,0);
+    buttonGroup->addButton(ui->pushButton_index,1);
+    buttonGroup->addButton(ui->pushButton_insert,2);
+    buttonGroup->addButton(ui->pushButton_append,3);
+    buttonGroup->addButton(ui->pushButton_about,4);
+
+    ui->pushButton_delete->setChecked(true);
+    //一打开界面默认选中的是删除按钮 不然的话，后面必须点击一次才可以
+    buttonGroup->setExclusive(true);
+
+
     //默认页面在第1页
     ui->stackedWidget->setCurrentIndex(0);
 
@@ -92,7 +119,7 @@ Widget::Widget(QWidget *parent)
     */
 
     //设置列宽均分窗口
-    //ui->tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     //ui->tableWidget->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
 
@@ -108,6 +135,8 @@ Widget::Widget(QWidget *parent)
     QFont font = ui->tableWidget->horizontalHeader()->font();
     font.setBold(true);
     ui->tableWidget->horizontalHeader()->setFont(font);
+
+    //ui->tableWidget->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
 
     //为单元格添加图标 文字
     //ui->tableWidget->insertRow(0);
@@ -521,18 +550,18 @@ void Widget::on_pushButton_Display_1_clicked()
 
     //文本框有内容
     switch (buttonGroup->checkedId()) {  //得到buttonGroup中选择的是哪一个组别
-        case -2: //删除
+        case 0: //删除
             deleteString();  //删除函数
             break;
-        case -3:  //序号
+        case 1:  //序号
             appednIndex();     //插入序号函数
             break;
 
-        case -4:  //任意位置插入任何字符函数    
+        case 2:  //任意位置插入任何字符函数
             insertString();
             break;
 
-        case -5:  //改变扩展名
+        case 3:  //改变扩展名
             changeappend();
             break;
     }
@@ -654,29 +683,31 @@ void Widget::on_pushButton_Display_1_clicked()
 //buttongroup槽函数
 void Widget::on_changeButtonGroup(int)
 {
-    QPushButton *checkedButton = qobject_cast<QPushButton*>(buttonGroup->checkedButton());
-    QString checkedBtnObjectName = checkedButton->objectName();
+    //QPushButton *checkedButton = qobject_cast<QPushButton*>(buttonGroup->checkedButton());
+    //qDebug()<<checkedButton->objectName();
+    //QString checkedBtnObjectName = checkedButton->objectName();
     //qDebug()<<tr("被选中按钮的objectName==%1").arg(checkedBtnObjectName);
     //qDebug()<<buttonGroup->checkedId();    //-2删除 -3 -4
 
     int buttonid = buttonGroup->checkedId();  //在buttongroup中，每一个button都有一个id
+    //qDebug()<<buttonid<<endl;
     //根据id 设置stackwidget的显示
     switch (buttonid) {
-    case -2:  //删除
+    case 0:  //删除
         ui->stackedWidget->setCurrentIndex(0);
         break;
 
-    case -3:  //序号
+    case 1:  //序号
          ui->stackedWidget->setCurrentIndex(1);
         break;
 
-    case -4: //插入
+    case 2: //插入
         ui->stackedWidget->setCurrentIndex(2);
         break;
-    case -5: //扩展名
+    case 3: //扩展名
         ui->stackedWidget->setCurrentIndex(3);
         break;
-    case -6: //关于
+    case 4: //关于
         ui->stackedWidget->setCurrentIndex(4);
         break;
     }
@@ -698,15 +729,22 @@ void Widget::deleteString()
        //开始删除,会改变原来字符的长度 这里用一个temp
        QString stringtemp = fileNameRemoveSuffix;
 
-       //1.删除文件名中的***   (这个目前还没有做)
-
-
-
        int begin = ui->spinBox->value();      //从第*个字符开始
        int index_2 = ui->spinBox_2->value();   //删除*个
+
+       //1.删除文件名中的***   (这个目前还没有做)
+       if(ui->radioButton_Delete->isChecked())
+       {
+           QString inputDelete = ui->lineEdit->text();   //输入需要删除的字符
+           stringtemp.remove(inputDelete);
+
+       }
+
        //2.从前往后删除
        if(ui->radioButton_Delete_From_Begin->isChecked())
-       {  stringtemp.remove(begin-1,index_2);  } //删除，原字符会改变 函数是从0开始的 所以-1}
+       {
+           stringtemp.remove(begin-1,index_2);  //删除，原字符会改变 函数是从0开始的 所以-1}
+       }
 
        //3.从后往前删除,这个就比较复杂了
        else if(ui->radioButton_Delete_From_End->isChecked())
